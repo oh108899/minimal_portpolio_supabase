@@ -1,9 +1,10 @@
 import { createClient } from "./utils/supabase/client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
   const supabase = createClient();
-  const { data: projects } = await supabase.from("portfolio").select();
+  const { data: projects } = await supabase.from("portfolio").select().limit(3);
   console.log(projects)
 
   return (
@@ -60,7 +61,7 @@ export default async function Home() {
 
         </div>
         <p className="porfolio_readmore">
-          <a href="" className="primary-btn">See my full portfolio</a>
+          <Link href="/portfolio" className="primary-btn">See my full portfolio</Link>
         </p>
       </div>
     </>
