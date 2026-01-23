@@ -1,14 +1,39 @@
+"use client"
+import { useState } from "react";
 import { createClient } from "../utils/supabase/client";
 
-export default  function Insert() {
-  
+export default function Insert() {
+  const [input, setInput] = useState({
+    title: "",
+    content: "",
+    url: "",
+    review: "",
+    reviewer: "",
+    rep1_desc: "",
+    rep2_desc: ""
+  })
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInput(prev => { return { ...prev, [name]: value } })
+  }
+
   const supabase = createClient();
-  const onSubmit = async (e)=>{
+  const onSubmit = async (e) => {
     e.preventDefault();
     const { error } = await supabase
-    .from('portfolio')
-    .insert({ title: "제목 입력 테스트", content: '본문 입력 테스트' })
-    console.log(error)
+      .from('portfolio')
+      .insert({ title: input.title, content: input.content, url: input.url, review: input.review, reviewer: input.reviewer, rep1_desc: input.rep1_desc, rep2_desc: input.rep2_desc });
+    console.log(error);
+    setInput({
+      title: "",
+      content: "",
+      url: "",
+      review: "",
+      reviewer: "",
+      rep1_desc: "",
+      rep2_desc: ""
+    })
   }
 
 
@@ -16,26 +41,26 @@ export default  function Insert() {
     <>
       <h2 >프로젝트 입력</h2>
       <div className="contact_form">
-        <form action="">
+        <form action="" onSubmit={onSubmit}>
           <p className="field">
             <label htmlFor="title">title:</label>
-            <input type="text" id="title" name="title" placeholder="title" />
+            <input type="text" id="title" name="title" placeholder="title" value={input.title} onChange={handleInputChange} />
           </p>
           <p className="field">
             <label htmlFor="content">Project Description:</label>
-            <textarea name="content" id="content" cols="30" rows="10" placeholder="content"></textarea>
+            <textarea name="content" id="content" cols="30" rows="10" placeholder="content" value={input.content} onChange={handleInputChange}></textarea>
           </p>
           <p className="field">
             <label htmlFor="url">url:</label>
-            <input type="url" id="url" name="url" placeholder="url" />
+            <input type="url" id="url" name="url" placeholder="url" value={input.url} onChange={handleInputChange} />
           </p>
           <p className="field">
             <label htmlFor="review">review:</label>
-            <textarea name="review" id="review" cols="30" rows="10" placeholder="review"></textarea>
+            <textarea name="review" id="review" cols="30" rows="10" placeholder="review" value={input.review} onChange={handleInputChange}></textarea>
           </p>
           <p className="field">
             <label htmlFor="reviewer">reviewer:</label>
-            <input type="text" id="reviewer" name="reviewer" placeholder="reviewer" />
+            <input type="text" id="reviewer" name="reviewer" placeholder="reviewer" value={input.reviewer} onChange={handleInputChange} />
           </p>
           <p className="field">
             <label htmlFor="rep1_img">rep1_img:</label>
@@ -43,7 +68,7 @@ export default  function Insert() {
           </p>
           <p className="field">
             <label htmlFor="rep1_desc">rep1_desc:</label>
-            <textarea name="rep1_desc" id="rep1_desc" cols="30" rows="10" placeholder="rep1_desc"></textarea>
+            <textarea name="rep1_desc" id="rep1_desc" cols="30" rows="10" placeholder="rep1_desc" value={input.rep1_desc} onChange={handleInputChange}></textarea>
           </p>
           <p className="field">
             <label htmlFor="rep2_img">rep2_img:</label>
@@ -51,7 +76,7 @@ export default  function Insert() {
           </p>
           <p className="field">
             <label htmlFor="rep2_desc">rep2_desc:</label>
-            <textarea name="rep2_desc" id="rep2_desc" cols="30" rows="10" placeholder="rep2_desc"></textarea>
+            <textarea name="rep2_desc" id="rep2_desc" cols="30" rows="10" placeholder="rep2_desc" value={input.rep2_desc} onChange={handleInputChange}></textarea>
           </p>
           <p className="field">
             <label htmlFor="thumbnail">thumbnail:</label>
