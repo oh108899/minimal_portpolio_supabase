@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default async function Home() {
   const supabase = createClient();
-  const { data: projects } = await supabase.from("portfolio").select().limit(3);
+  const { data: projects } = await supabase.from("portfolio").select().limit(3).order('id',{ascending: false });
   console.log(projects)
 
   return (
@@ -36,8 +36,10 @@ export default async function Home() {
                     {/* <img src={p.url} alt="latest_portfolio_01" /> */}
                     <div className="hover_contents">
                       <div className="list_info">
-                        <h3><a href="">{p.title}</a> <Image src="/images/portfolio_list_arrow.png" alt="list arrow" width={6} height={8} /></h3>
-                        <p><a href="">Click to see project</a></p>
+                        <h3>
+                          <Link href={`/detail/${p.id}`}>{p.title}</Link>
+                          <Image src="/images/portfolio_list_arrow.png" alt="list arrow" width={6} height={8} /></h3>
+                        <p><Link href={`/detail/${p.id}`}>Click to see project</Link></p>
                       </div>
                     </div>
                   </div>
