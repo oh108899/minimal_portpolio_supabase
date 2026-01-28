@@ -132,7 +132,7 @@ export default function Insert() {
       return;
     }
     const result2 = files.rep1_img ? await uploadFile(files.rep1_img, 'rep1Img') : null;
-    console.log(result2);    
+    console.log(result2);
     if (result2?.ok === false) {
       alert(`파일 업로드 실패: ${result2.error.message}`);
     }
@@ -182,7 +182,7 @@ export default function Insert() {
     }
   }
   */
-   const uploadFile = useCallback(
+  const uploadFile = useCallback(
     async (file, folder) => {
       const filepath = `${folder}/${Date.now()}-${file.name}`;
       const { data, error } = await supabase.storage
@@ -195,6 +195,14 @@ export default function Insert() {
     [supabase]
   );
 
+  const handleKakaoLigin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: {
+    redirectTo: `http://localhost:3000/insert`,
+  },
+    })
+  }
 
   if (!user) {
     return (
@@ -214,6 +222,7 @@ export default function Insert() {
             <input type="submit" className="primary-btn" value="로그인" />
           </p>
         </form>
+        <button className="primary-btn" onClick={handleKakaoLigin}>카카오 로그인</button>
       </div>
     )
   }

@@ -3,7 +3,16 @@ import { createClient } from "../utils/supabase/client";
 
 export default async function portfolio() {
   const supabase = createClient();
-  const { data: projects } = await supabase.from("portfolio").select();
+  const { data: projects } = await supabase.from("portfolio").select().order('id',{ascending: false });
+  const getPublicUrl = (path) => {
+    if (!path) return `https://dummyimage.com/364x209/ccc/fff`
+    const { data } = supabase
+      .storage
+      .from('portfolio')
+      .getPublicUrl(path);
+
+    return data.publicUrl;
+  }
   return (
     <div className="container latest_portfolio">
       <div className="row list">
@@ -12,7 +21,7 @@ export default async function portfolio() {
             return (
               <div className="col-md-4" key={p.id}>
                 <div className="contents shadow">
-                  {/* <img src={p.url} alt="latest_portfolio_01" /> */}
+                  <Image src={getPublicUrl(p.thumbnail)} alt={p.title} width={364} height={209} />
                   <div className="hover_contents">
                     <div className="list_info">
                       <h3><a href="">{p.title}</a> <Image src="/images/portfolio_list_arrow.png" alt="list arrow" width={6} height={8} /></h3>
